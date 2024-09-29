@@ -25,10 +25,11 @@ import androidx.compose.ui.graphics.Color
 @Composable
 fun FilterBottomSheet(
     onDismiss: () -> Unit,
-    onApplyFilters: (String, String) -> Unit
+    onApplyFilters: (String, String, Int) -> Unit // Ahora incluye también la prioridad
 ) {
     var selectedStatus by remember { mutableStateOf("") }
     var selectedDate by remember { mutableStateOf("") }
+    var selectedPriority by remember { mutableStateOf(0) }  // Estado para la prioridad
 
     ModalBottomSheet(
         onDismissRequest = onDismiss
@@ -59,13 +60,38 @@ fun FilterBottomSheet(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Fecha
+            // Prioridad
+            Text("Prioridad:", style = MaterialTheme.typography.labelSmall)
+            Row {
+                RadioButton(
+                    selected = selectedPriority == 0,
+                    onClick = { selectedPriority = 0 }
+                )
+                Text(text = "Baja", modifier = Modifier.padding(start = 8.dp))
 
+                Spacer(modifier = Modifier.width(16.dp))
+
+                RadioButton(
+                    selected = selectedPriority == 1,
+                    onClick = { selectedPriority = 1 }
+                )
+                Text(text = "Media", modifier = Modifier.padding(start = 8.dp))
+
+                Spacer(modifier = Modifier.width(16.dp))
+
+                RadioButton(
+                    selected = selectedPriority == 2,
+                    onClick = { selectedPriority = 2 }
+                )
+                Text(text = "Alta", modifier = Modifier.padding(start = 8.dp))
+            }
 
             Spacer(modifier = Modifier.height(16.dp))
 
             Button(
-                onClick = { onApplyFilters(selectedStatus, selectedDate) },
+                onClick = {
+                    onApplyFilters(selectedStatus, selectedDate, selectedPriority)
+                },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF7D5260)
                 ),

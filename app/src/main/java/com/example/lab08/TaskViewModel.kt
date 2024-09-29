@@ -48,4 +48,16 @@ class TaskViewModel(private val dao: TaskDao): ViewModel(){
         }
     }
 
+    // Función para filtrar tareas
+    fun filterTasks(status: String, category: String, priority: Int) {
+        viewModelScope.launch {
+            val filteredTasks = dao.getAllTasks().filter { task ->
+                (status == "" || task.isCompleted == (status == "completa")) &&
+                        (category == "" || task.category == category) &&
+                        (priority == -1 || task.priority == priority)
+            }
+            _tasks.value = filteredTasks
+        }
+    }
+
 }
