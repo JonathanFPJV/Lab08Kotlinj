@@ -10,16 +10,22 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -28,65 +34,59 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.lab08.TaskViewModel
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @Composable
-fun TaskScreen(viewModel: TaskViewModel) {
-    val tasks by viewModel.tasks.collectAsState()
-    val coroutineScope = rememberCoroutineScope()
-    var newTaskDescription by remember { mutableStateOf("") }
+fun NoteAppScaffold() {
+    Scaffold(
+        topBar = { AppTopBar() },
+        floatingActionButton = { AddNoteFab() },
+        content = { padding ->
+            NoteContent(Modifier.padding(padding))
+        },
+        bottomBar = { AppBottomBar() }
+    )
+}
 
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
+
+@Composable
+fun AddNoteFab(modifier: Modifier = Modifier) {
+    FloatingActionButton(
+        onClick = { /* Acción para agregar nota */ },
+        containerColor = Color(0xFF7D5260)
     ) {
-        TextField(
-            value = newTaskDescription,
-            onValueChange = { newTaskDescription = it },
-            label = { Text("Nueva tarea") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-
-        Button(
-            onClick = {
-                if (newTaskDescription.isNotEmpty()) {
-                    viewModel.addTask(newTaskDescription)
-                    newTaskDescription = ""
-                }
-            },
-            modifier = Modifier.fillMaxWidth().padding(top = 8.dp)
-        ) {
-            Text("Agregar tarea")
-        }
-
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-
-        tasks.forEach { task ->
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(text = task.description)
-                Button(onClick = { viewModel.toggleTaskCompletion(task) }) {
-                    Text(if (task.isCompleted) "Completada" else "Pendiente")
-                }
-            }
-        }
-
-
-        Button(
-            onClick = { coroutineScope.launch { viewModel.deleteAllTasks() } },
-            modifier = Modifier.fillMaxWidth().padding(top = 16.dp)
-        ) {
-            Text("Eliminar todas las tareas")
+        Row (modifier = modifier
+            .padding(16.dp)) {
+            Icon(Icons.Default.Add, contentDescription = "Agregar Nota")
+            Text(text = "Agregar nota")
         }
     }
 }
 
+@Composable
+fun NoteContent(modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        // Aquí agregas la lógica para mostrar la lista de notas
+        Text("Aquí van las notas")
+    }
+}
+
+
+
+@Preview(showBackground = true)
+@Composable
+fun NoteAppPreview() {
+    NoteAppScaffold()
+}
