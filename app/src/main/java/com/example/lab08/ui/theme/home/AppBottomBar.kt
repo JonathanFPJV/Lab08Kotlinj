@@ -28,12 +28,13 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role.Companion.RadioButton
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.lab08.TaskViewModel
 import com.example.lab08.ui.theme.filter.FilterBottomSheet
 import java.util.*
 
 
 @Composable
-fun AppBottomBar(navController: NavHostController) {
+fun AppBottomBar(navController: NavHostController,viewModel: TaskViewModel) {
     var showFilterSheet by remember { mutableStateOf(false) }
 
     BottomAppBar(
@@ -70,13 +71,14 @@ fun AppBottomBar(navController: NavHostController) {
     if (showFilterSheet) {
         FilterBottomSheet(
             onDismiss = { showFilterSheet = false },
-            onApplyFilters = { status, date ->
-                // Aquí puedes implementar la lógica para aplicar los filtros
-                println("Filtros aplicados: Estado = $status, Fecha = $date")
+            onApplyFilters = { status, category, priority ->
+                viewModel.filterTasks(status, category, priority)
                 showFilterSheet = false
-            }
+            },
+            viewModel = viewModel  // Asegúrate de pasar el viewModel
         )
     }
+
 }
 
 @Composable

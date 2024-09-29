@@ -19,17 +19,19 @@ import androidx.compose.runtime.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
+import com.example.lab08.TaskViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FilterBottomSheet(
     onDismiss: () -> Unit,
-    onApplyFilters: (String, String, Int) -> Unit // Ahora incluye también la prioridad
+    onApplyFilters: (String, String, Int) -> Unit,
+    viewModel: TaskViewModel // Pasamos el ViewModel
 ) {
     var selectedStatus by remember { mutableStateOf("") }
-    var selectedDate by remember { mutableStateOf("") }
-    var selectedPriority by remember { mutableStateOf(0) }  // Estado para la prioridad
+    var selectedCategory by remember { mutableStateOf("") }
+    var selectedPriority by remember { mutableStateOf(-1) }  // -1 significa que no hay filtro de prioridad
 
     ModalBottomSheet(
         onDismissRequest = onDismiss
@@ -67,7 +69,7 @@ fun FilterBottomSheet(
                     selected = selectedPriority == 0,
                     onClick = { selectedPriority = 0 }
                 )
-                Text(text = "Baja", modifier = Modifier.padding(start = 8.dp))
+                Text("Baja", modifier = Modifier.padding(start = 8.dp))
 
                 Spacer(modifier = Modifier.width(16.dp))
 
@@ -75,7 +77,7 @@ fun FilterBottomSheet(
                     selected = selectedPriority == 1,
                     onClick = { selectedPriority = 1 }
                 )
-                Text(text = "Media", modifier = Modifier.padding(start = 8.dp))
+                Text("Media", modifier = Modifier.padding(start = 8.dp))
 
                 Spacer(modifier = Modifier.width(16.dp))
 
@@ -83,14 +85,16 @@ fun FilterBottomSheet(
                     selected = selectedPriority == 2,
                     onClick = { selectedPriority = 2 }
                 )
-                Text(text = "Alta", modifier = Modifier.padding(start = 8.dp))
+                Text("Alta", modifier = Modifier.padding(start = 8.dp))
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            // Botón para aplicar los filtros
             Button(
                 onClick = {
-                    onApplyFilters(selectedStatus, selectedDate, selectedPriority)
+                    viewModel.filterTasks(selectedStatus, selectedCategory, selectedPriority)
+                    onDismiss()  // Cerrar el BottomSheet
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF7D5260)
@@ -99,6 +103,8 @@ fun FilterBottomSheet(
             ) {
                 Text("Aplicar filtros")
             }
+
+
         }
     }
 }

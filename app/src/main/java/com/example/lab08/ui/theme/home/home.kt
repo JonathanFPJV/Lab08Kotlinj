@@ -81,27 +81,13 @@ fun NoteAppScaffold(viewModel: TaskViewModel) {
                 }
             }
         },
-        bottomBar = { AppBottomBar(navController = navController) }
+        bottomBar = { AppBottomBar(navController = navController,viewModel = viewModel) }
     )
 
 
 }
 
 
-
-@Composable
-fun AddNoteFab(modifier: Modifier = Modifier) {
-    FloatingActionButton(
-        onClick = { /* Acción para agregar nota */ },
-        containerColor = Color(0xFF7D5260)
-    ) {
-        Row (modifier = modifier
-            .padding(16.dp)) {
-            Icon(Icons.Default.Add, contentDescription = "Agregar Nota")
-            Text(text = "Agregar nota")
-        }
-    }
-}
 
 
 
