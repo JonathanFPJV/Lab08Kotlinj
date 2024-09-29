@@ -58,7 +58,7 @@ fun NoteAppScaffold(viewModel: TaskViewModel) {
     var showDialog by remember { mutableStateOf(false) }
 
     Scaffold(
-        topBar = { AppTopBar(navController = navController) },
+        topBar = { AppTopBar(navController = navController, viewModel = viewModel) },
         floatingActionButton = { AddNoteFab(onClick = { showDialog = true }) },
         content = { padding ->
             NavigationHost(navController = navController, padding = padding, viewModel = viewModel)

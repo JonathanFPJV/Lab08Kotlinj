@@ -71,4 +71,19 @@ class TaskViewModel(private val dao: TaskDao): ViewModel(){
         }
     }
 
+    // Función para buscar tareas por palabras clave
+    fun searchTasks(query: String) {
+        viewModelScope.launch {
+            val searchResults = if (query.isNotEmpty()) {
+                dao.getAllTasks().filter { task ->
+                    task.description.contains(query, ignoreCase = true) ||
+                            task.category.contains(query, ignoreCase = true)
+                }
+            } else {
+                dao.getAllTasks()
+            }
+            _tasks.value = searchResults
+        }
+    }
+
 }
