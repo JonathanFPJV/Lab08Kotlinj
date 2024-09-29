@@ -37,21 +37,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.rememberNavController
 import com.example.lab08.TaskViewModel
+import com.example.lab08.ui.theme.Content.NavigationHost
+import com.example.lab08.ui.theme.Content.NoteContent
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
 @Composable
-fun NoteAppScaffold() {
+fun NoteAppScaffold(viewModel: TaskViewModel) {
+    val navController = rememberNavController()
+
     Scaffold(
         topBar = { AppTopBar() },
         floatingActionButton = { AddNoteFab() },
         content = { padding ->
-            NoteContent(Modifier.padding(padding))
+            NavigationHost(navController = navController, padding = padding,viewModel = viewModel)
         },
-        bottomBar = { AppBottomBar() }
+        bottomBar = { AppBottomBar(navController = navController) }
     )
 }
 
@@ -71,22 +76,8 @@ fun AddNoteFab(modifier: Modifier = Modifier) {
     }
 }
 
-@Composable
-fun NoteContent(modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        // Aquí agregas la lógica para mostrar la lista de notas
-        Text("Aquí van las notas")
-    }
-}
 
 
 
-@Preview(showBackground = true)
-@Composable
-fun NoteAppPreview() {
-    NoteAppScaffold()
-}
+
+

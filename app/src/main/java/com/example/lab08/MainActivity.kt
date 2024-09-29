@@ -13,6 +13,7 @@ import androidx.room.Room
 import kotlinx.coroutines.launch
 import com.example.lab08.ui.theme.Lab08Theme
 import com.example.lab08.ui.theme.create.TaskScreen
+import com.example.lab08.ui.theme.home.NoteAppScaffold
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class MainActivity : ComponentActivity() {
@@ -21,26 +22,20 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             Lab08Theme {
-                // Inicializamos la base de datos con la opción de realizar migraciones destructivas
                 val db = Room.databaseBuilder(
                     applicationContext,
                     TaskDatabase::class.java,
                     "task_db"
-                )
-                    .fallbackToDestructiveMigration() // Elimina la base de datos anterior si hay cambios en la versión
-                    .build()
+                ).build()
 
-                // Obtenemos el DAO para interactuar con la base de datos
                 val taskDao = db.taskDao()
+                val viewModel = TaskViewModel(taskDao)  // Crear el ViewModel
 
-                // Pasamos el DAO al ViewModel
-                val viewModel = TaskViewModel(taskDao)
-
-                // Pasamos el ViewModel a la pantalla
-                TaskScreen(viewModel)
+                NoteAppScaffold(viewModel = viewModel)  // Pasar el ViewModel al Scaffold
             }
         }
     }
 }
+
 
 

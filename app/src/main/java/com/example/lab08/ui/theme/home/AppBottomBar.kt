@@ -27,12 +27,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role.Companion.RadioButton
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.lab08.ui.theme.filter.FilterBottomSheet
 import java.util.*
 
 
 @Composable
-fun AppBottomBar() {
+fun AppBottomBar(navController: NavHostController) {
     var showFilterSheet by remember { mutableStateOf(false) }
 
     BottomAppBar(
@@ -59,9 +60,10 @@ fun AppBottomBar() {
             Spacer(Modifier.weight(1f, true))
 
             // Configuración
-            BottomBarItem(icon = Icons.Default.Settings, label = "Config.") {
-                // Acción de configuración
-            }
+            BottomBarItem(
+                icon = Icons.Default.Settings, label = "Config.",
+                onClick = { navController.navigate("configuracion") }
+            )
         }
     )
 

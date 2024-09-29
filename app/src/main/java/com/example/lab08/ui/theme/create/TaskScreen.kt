@@ -79,9 +79,6 @@ fun TaskScreen(viewModel: TaskViewModel) {
         }
 
 
-
-
-
         Button(
             onClick = {
                 if (newTaskDescription.isNotEmpty()) {
@@ -99,25 +96,5 @@ fun TaskScreen(viewModel: TaskViewModel) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-
-        tasks.forEach { task ->
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(text = task.description)
-                Button(onClick = { viewModel.toggleTaskCompletion(task) }) {
-                    Text(if (task.isCompleted) "Completada" else "Pendiente")
-                }
-            }
-        }
-
-
-        Button(
-            onClick = { coroutineScope.launch { viewModel.deleteAllTasks() } },
-            modifier = Modifier.fillMaxWidth().padding(top = 16.dp)
-        ) {
-            Text("Eliminar todas las tareas")
-        }
     }
 }
