@@ -31,4 +31,7 @@ interface TaskDao {
     // Eliminar todas las tareas
     @Query("DELETE FROM tasks")
     suspend fun deleteAllTasks()
+
+    @Query("SELECT * FROM tasks ORDER BY priority DESC")
+    suspend fun getTasksOrderedByPriority(): List<Task>
 }

@@ -65,4 +65,10 @@ class TaskViewModel(private val dao: TaskDao): ViewModel(){
         }
     }
 
+    fun getTasksOrderedByPriority() {
+        viewModelScope.launch {
+            _tasks.value = dao.getTasksOrderedByPriority()
+        }
+    }
+
 }

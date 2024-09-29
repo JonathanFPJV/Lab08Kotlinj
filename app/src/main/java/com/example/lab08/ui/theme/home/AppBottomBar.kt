@@ -42,6 +42,7 @@ fun AppBottomBar(navController: NavHostController,viewModel: TaskViewModel) {
             // Ordenar
             BottomBarItem(icon = Icons.Default.Sort, label = "Ordenar") {
                 // Acción de ordenar
+                viewModel.getTasksOrderedByPriority()
             }
 
             Spacer(Modifier.weight(1f, true))
