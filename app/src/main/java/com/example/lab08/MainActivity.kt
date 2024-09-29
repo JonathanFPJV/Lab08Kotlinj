@@ -21,20 +21,26 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             Lab08Theme {
+                // Inicializamos la base de datos con la opción de realizar migraciones destructivas
                 val db = Room.databaseBuilder(
                     applicationContext,
                     TaskDatabase::class.java,
                     "task_db"
-                ).build()
+                )
+                    .fallbackToDestructiveMigration() // Elimina la base de datos anterior si hay cambios en la versión
+                    .build()
 
-
+                // Obtenemos el DAO para interactuar con la base de datos
                 val taskDao = db.taskDao()
+
+                // Pasamos el DAO al ViewModel
                 val viewModel = TaskViewModel(taskDao)
 
-
+                // Pasamos el ViewModel a la pantalla
                 TaskScreen(viewModel)
             }
         }
     }
 }
+
 

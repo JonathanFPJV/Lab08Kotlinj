@@ -72,6 +72,7 @@ dependencies {
     implementation("androidx.room:room-ktx:$room_version")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$room_version")
     implementation ("androidx.compose.material:material-icons-extended:1.5.0")
-
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.2")
+    implementation ("androidx.compose.material3:material3:1.1.0")
 
 }

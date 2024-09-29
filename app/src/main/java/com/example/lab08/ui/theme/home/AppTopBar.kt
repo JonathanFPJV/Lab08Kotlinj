@@ -19,12 +19,11 @@ import java.util.Locale
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppTopBar() {
-    val todayDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())
 
     TopAppBar(
         title = {
             Text(
-                text = "Hoy - $todayDate",
+                text = "Listado de Tareas",
                 color = Color.White, // Texto en color blanco
                 style = MaterialTheme.typography.titleLarge // Estilo de texto
             )

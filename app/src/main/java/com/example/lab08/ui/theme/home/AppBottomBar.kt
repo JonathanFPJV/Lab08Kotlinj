@@ -15,48 +15,75 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.TextField
+import androidx.compose.runtime.*
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.semantics.Role.Companion.RadioButton
+import androidx.compose.ui.unit.dp
+import com.example.lab08.ui.theme.filter.FilterBottomSheet
+import java.util.*
+
 
 @Composable
 fun AppBottomBar() {
+    var showFilterSheet by remember { mutableStateOf(false) }
+
     BottomAppBar(
         content = {
             // Ordenar
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                IconButton(onClick = { /* Acción de ordenar */ }) {
-                    Icon(Icons.Default.Sort, contentDescription = "Ordenar")
-                }
-                Text(text = "Ordenar", style = MaterialTheme.typography.labelSmall)
+            BottomBarItem(icon = Icons.Default.Sort, label = "Ordenar") {
+                // Acción de ordenar
             }
 
             Spacer(Modifier.weight(1f, true))
 
             // Filtrar
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                IconButton(onClick = { /* Acción de filtrar */ }) {
-                    Icon(Icons.Default.FilterList, contentDescription = "Filtrar")
-                }
-                Text(text = "Filtrar", style = MaterialTheme.typography.labelSmall)
+            BottomBarItem(icon = Icons.Default.FilterList, label = "Filtrar") {
+                showFilterSheet = true
             }
 
             Spacer(Modifier.weight(1f, true))
 
             // Compartir
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                IconButton(onClick = { /* Acción de compartir */ }) {
-                    Icon(Icons.Default.Share, contentDescription = "Compartir")
-                }
-                Text(text = "Compartir", style = MaterialTheme.typography.labelSmall)
+            BottomBarItem(icon = Icons.Default.Share, label = "Compartir") {
+                // Acción de compartir
             }
 
             Spacer(Modifier.weight(1f, true))
 
             // Configuración
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                IconButton(onClick = { /* Acción de configuración */ }) {
-                    Icon(Icons.Default.Settings, contentDescription = "Configuración")
-                }
-                Text(text = "Config.", style = MaterialTheme.typography.labelSmall)
+            BottomBarItem(icon = Icons.Default.Settings, label = "Config.") {
+                // Acción de configuración
             }
         }
     )
+
+    if (showFilterSheet) {
+        FilterBottomSheet(
+            onDismiss = { showFilterSheet = false },
+            onApplyFilters = { status, date ->
+                // Aquí puedes implementar la lógica para aplicar los filtros
+                println("Filtros aplicados: Estado = $status, Fecha = $date")
+                showFilterSheet = false
+            }
+        )
+    }
 }
+
+@Composable
+fun BottomBarItem(icon: ImageVector, label: String, onClick: () -> Unit) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        IconButton(onClick = onClick) {
+            Icon(icon, contentDescription = label)
+        }
+        Text(text = label, style = MaterialTheme.typography.labelSmall)
+    }
+}
+

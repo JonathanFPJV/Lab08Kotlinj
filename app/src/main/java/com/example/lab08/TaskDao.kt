@@ -19,6 +19,9 @@ interface TaskDao {
     @Insert
     suspend fun insertTask(task: Task)
 
+    // Obtener tareas por categoría
+    @Query("SELECT * FROM tasks WHERE category = :category")
+    suspend fun getTasksByCategory(category: String): List<Task>
 
     // Marcar una tarea como completada o no completada
     @Update
