@@ -1,5 +1,6 @@
 package com.example.lab08.ui.theme.home
 
+import androidx.compose.foundation.clickable
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Search
@@ -11,21 +12,26 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.navigation.NavHostController
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppTopBar() {
+fun AppTopBar(navController: NavHostController) {
 
     TopAppBar(
         title = {
             Text(
                 text = "Listado de Tareas",
                 color = Color.White, // Texto en color blanco
-                style = MaterialTheme.typography.titleLarge // Estilo de texto
+                style = MaterialTheme.typography.titleLarge, // Estilo de texto
+                modifier = Modifier.clickable {
+                    navController.navigate("lista") // Navegar de vuelta a la página de inicio
+                }
             )
         },
         colors = TopAppBarDefaults.smallTopAppBarColors(

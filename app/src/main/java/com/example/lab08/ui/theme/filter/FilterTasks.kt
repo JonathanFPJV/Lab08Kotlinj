@@ -91,20 +91,36 @@ fun FilterBottomSheet(
             Spacer(modifier = Modifier.height(16.dp))
 
             // Botón para aplicar los filtros
-            Button(
-                onClick = {
-                    viewModel.filterTasks(selectedStatus, selectedCategory, selectedPriority)
-                    onDismiss()  // Cerrar el BottomSheet
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF7D5260)
-                ),
-                modifier = Modifier.align(Alignment.End)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text("Aplicar filtros")
+                Button(
+                    onClick = {
+                        viewModel.filterTasks(selectedStatus, selectedCategory, selectedPriority)
+                        onDismiss()  // Cerrar el BottomSheet
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFF7D5260)
+                    ),
+                ) {
+                    Text("Aplicar filtros")
+                }
+
+                // Botón para deshacer los filtros
+                Button(
+                    onClick = {
+                        viewModel.getAllTasks()  // Llamamos a la función para obtener todas las tareas
+                        onDismiss()  // Cerrar el BottomSheet
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Gray
+                    ),
+                ) {
+                    Text("Limpiar filtros")
+                }
             }
-
-
         }
     }
 }
+

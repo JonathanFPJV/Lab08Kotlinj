@@ -58,10 +58,10 @@ fun NoteAppScaffold(viewModel: TaskViewModel) {
     var showDialog by remember { mutableStateOf(false) }
 
     Scaffold(
-        topBar = { AppTopBar() },
-        floatingActionButton = { AddNoteFab(onClick = { showDialog = true })},
+        topBar = { AppTopBar(navController = navController) },
+        floatingActionButton = { AddNoteFab(onClick = { showDialog = true }) },
         content = { padding ->
-            NavigationHost(navController = navController, padding = padding,viewModel = viewModel)
+            NavigationHost(navController = navController, padding = padding, viewModel = viewModel)
             if (showDialog) {
                 Dialog(
                     onDismissRequest = { showDialog = false },
@@ -75,17 +75,17 @@ fun NoteAppScaffold(viewModel: TaskViewModel) {
                     ) {
                         TaskScreen(
                             viewModel = viewModel,
-                            onTaskAdded = { showDialog = false }
+                            onTaskAdded = { showDialog = false },
+                            onCancel = { showDialog = false }  // Aquí se cierra el diálogo cuando se cancela
                         )
                     }
                 }
             }
         },
-        bottomBar = { AppBottomBar(navController = navController,viewModel = viewModel) }
+        bottomBar = { AppBottomBar(navController = navController, viewModel = viewModel) }
     )
-
-
 }
+
 
 
 

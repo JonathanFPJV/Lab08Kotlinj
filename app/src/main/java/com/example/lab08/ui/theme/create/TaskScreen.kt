@@ -23,12 +23,14 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.lab08.TaskViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TaskScreen(viewModel: TaskViewModel, onTaskAdded: () -> Unit) {
+fun TaskScreen(viewModel: TaskViewModel, onTaskAdded: () -> Unit, onCancel: () -> Unit) {
     var newTaskDescription by remember { mutableStateOf("") }
     var newTaskCategory by remember { mutableStateOf("") }
     var newTaskPriority by remember { mutableStateOf(0) }
@@ -72,6 +74,7 @@ fun TaskScreen(viewModel: TaskViewModel, onTaskAdded: () -> Unit) {
             Text(text = "Alta", modifier = Modifier.padding(start = 8.dp))
         }
 
+        // Botón para agregar la tarea
         Button(
             onClick = {
                 if (newTaskDescription.isNotEmpty()) {
@@ -84,6 +87,18 @@ fun TaskScreen(viewModel: TaskViewModel, onTaskAdded: () -> Unit) {
                 .padding(top = 8.dp)
         ) {
             Text("Agregar tarea")
+        }
+
+        // Botón para cancelar
+        Button(
+            onClick = {
+                onCancel()  // Llamar a la función de cancelar
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp)
+        ) {
+            Text("Cancelar")
         }
     }
 }

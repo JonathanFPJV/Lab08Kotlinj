@@ -59,5 +59,10 @@ class TaskViewModel(private val dao: TaskDao): ViewModel(){
             _tasks.value = filteredTasks
         }
     }
+    fun getAllTasks() {
+        viewModelScope.launch {
+            _tasks.value = dao.getAllTasks()
+        }
+    }
 
 }
