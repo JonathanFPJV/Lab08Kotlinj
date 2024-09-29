@@ -60,13 +60,7 @@ fun FilterBottomSheet(
             Spacer(modifier = Modifier.height(16.dp))
 
             // Fecha
-            Text("Fecha:", style = MaterialTheme.typography.labelSmall)
-            // Aquí podrías implementar un selector de fecha. Por simplicidad, usaremos un TextField
-            TextField(
-                value = selectedDate,
-                onValueChange = { selectedDate = it },
-                label = { Text("Seleccionar fecha") }
-            )
+
 
             Spacer(modifier = Modifier.height(16.dp))
 

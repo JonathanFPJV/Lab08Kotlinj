@@ -28,14 +28,10 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TaskScreen(viewModel: TaskViewModel) {
-    val tasks by viewModel.tasks.collectAsState()
-    val coroutineScope = rememberCoroutineScope()
+fun TaskScreen(viewModel: TaskViewModel, onTaskAdded: () -> Unit) {
     var newTaskDescription by remember { mutableStateOf("") }
     var newTaskCategory by remember { mutableStateOf("") }
-    var newTaskPriority by remember { mutableStateOf(0) }  // Mantén esto para la prioridad seleccionada
-    var showDatePicker by remember { mutableStateOf(false) }
-
+    var newTaskPriority by remember { mutableStateOf(0) }
 
     Column(
         modifier = Modifier
@@ -48,7 +44,6 @@ fun TaskScreen(viewModel: TaskViewModel) {
             label = { Text("Nueva tarea") },
             modifier = Modifier.fillMaxWidth()
         )
-        // Campo de categoría
         TextField(
             value = newTaskCategory,
             onValueChange = { newTaskCategory = it },
@@ -56,7 +51,6 @@ fun TaskScreen(viewModel: TaskViewModel) {
             modifier = Modifier.fillMaxWidth()
         )
 
-        // Grupo de RadioButtons para Prioridad
         Text("Prioridad")
         Row {
             RadioButton(
@@ -78,23 +72,18 @@ fun TaskScreen(viewModel: TaskViewModel) {
             Text(text = "Alta", modifier = Modifier.padding(start = 8.dp))
         }
 
-
         Button(
             onClick = {
                 if (newTaskDescription.isNotEmpty()) {
                     viewModel.addTask(newTaskDescription, newTaskCategory, newTaskPriority)
-                    newTaskDescription = ""
-                    newTaskCategory = ""
-                    newTaskPriority = 0
+                    onTaskAdded()
                 }
             },
-            modifier = Modifier.fillMaxWidth().padding(top = 8.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp)
         ) {
             Text("Agregar tarea")
         }
-
-
-        Spacer(modifier = Modifier.height(16.dp))
-
     }
 }
