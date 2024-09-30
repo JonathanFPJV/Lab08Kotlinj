@@ -13,10 +13,16 @@ import com.example.lab08.TaskViewModel
 fun NavigationHost(navController: NavHostController, padding: PaddingValues,viewModel: TaskViewModel) {
     NavHost(navController, startDestination = "lista") {
         composable("lista") {
-            NoteContent(padding = padding, viewModel = viewModel)  // Asegúrate de pasar el viewModel
+            NoteContent(padding = padding, viewModel = viewModel,navController = navController)  // Asegúrate de pasar el viewModel
         }
         composable("configuracion") {
             SettingsScreen(padding = padding)
+        }
+        composable("editTask/{taskId}") { backStackEntry ->
+            val taskId = backStackEntry.arguments?.getString("taskId")?.toIntOrNull()
+            taskId?.let { id ->
+                EditTaskScreen(navController = navController, viewModel = viewModel, taskId = id, padding = padding)
+            }
         }
 
     }

@@ -1,5 +1,6 @@
 package com.example.lab08.ui.theme.Content
 
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -29,13 +30,15 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.lab08.Task
 import com.example.lab08.TaskViewModel
 import kotlinx.coroutines.launch
 
 @Composable
-fun NoteContent(padding: PaddingValues, modifier: Modifier = Modifier, viewModel: TaskViewModel) {
+fun NoteContent(padding: PaddingValues, modifier: Modifier = Modifier, viewModel: TaskViewModel,navController: NavHostController) {
     // Obtener las tareas desde el ViewModel
     val tasks by viewModel.tasks.collectAsState()
     val coroutineScope = rememberCoroutineScope()
@@ -50,8 +53,10 @@ fun NoteContent(padding: PaddingValues, modifier: Modifier = Modifier, viewModel
             items(tasks) { task ->
                 TaskCard(
                     task = task,
-                    onDelete = {
-                        viewModel.deleteTask(task)  // Eliminar la tarea cuando se presiona el botón
+                    onToggleCompletion = { viewModel.toggleTaskCompletion(task) },
+                    onDelete = { viewModel.deleteTask(task) },
+                    onLongPress = {
+                        navController.navigate("editTask/${task.id}") // Navegar a la pantalla de edición
                     }
                 )
             }
@@ -87,12 +92,17 @@ fun TaskItem(task: Task, onToggleCompletion: () -> Unit) {
 }
 
 @Composable
-fun TaskCard(task: Task, onDelete: () -> Unit) {
+fun TaskCard(task: Task, onToggleCompletion: () -> Unit, onDelete: () -> Unit,onLongPress: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp), // Espacio alrededor de la tarjeta
-        shape = RoundedCornerShape(16.dp), // Forma redondeada
+            .padding(8.dp)
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onLongPress = { onLongPress() } // Detectar presión larga
+                )
+            },
+        shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = Color(0xFF725049)) // Color de fondo de la tarjeta
     ) {
         Row(
@@ -124,6 +134,16 @@ fun TaskCard(task: Task, onDelete: () -> Unit) {
                     },
                     style = MaterialTheme.typography.bodySmall.copy(color = Color.LightGray) // Texto más pequeño y en gris claro
                 )
+            }
+
+            // Botón para marcar la tarea como completada o incompleta
+            Button(
+                onClick = onToggleCompletion, // Llamamos a la función para alternar completado
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = if (task.isCompleted) Color.Green else Color.Red
+                ) // Color del botón dependiendo del estado de la tarea
+            ) {
+                Text(text = if (task.isCompleted) "Completada" else "Pendiente")
             }
 
             // Botón de icono de tacho de basura para eliminar la tarea

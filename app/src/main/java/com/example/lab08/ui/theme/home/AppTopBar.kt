@@ -44,8 +44,7 @@ fun AppTopBar(navController: NavHostController, viewModel: TaskViewModel) {
                     placeholder = { Text(text = "Buscar tareas...") },
                     modifier = Modifier.fillMaxWidth(),
                     colors = TextFieldDefaults.textFieldColors(
-                        containerColor = Color.Transparent, // Cambiar a containerColor
-
+                        containerColor = Color.Transparent
                     )
                 )
             } else {
@@ -69,6 +68,14 @@ fun AppTopBar(navController: NavHostController, viewModel: TaskViewModel) {
                 IconButton(onClick = { isSearching = true }) {
                     Icon(Icons.Default.Search, contentDescription = "Buscar tareas")
                 }
+
+                // Icono de notificaciones
+                IconButton(onClick = {
+                    // Aquí puedes definir la acción al hacer clic en el icono de notificaciones
+                }) {
+                    Icon(Icons.Default.Notifications, contentDescription = "Notificaciones")
+                }
+
             } else {
                 IconButton(onClick = {
                     searchQuery = ""
@@ -81,3 +88,4 @@ fun AppTopBar(navController: NavHostController, viewModel: TaskViewModel) {
         }
     )
 }
+

@@ -2,8 +2,10 @@ package com.example.lab08
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 
 class TaskViewModel(private val dao: TaskDao): ViewModel(){
@@ -91,6 +93,20 @@ class TaskViewModel(private val dao: TaskDao): ViewModel(){
         viewModelScope.launch {
             dao.deleteTask(task)
             _tasks.value = dao.getAllTasks()  // Recargamos la lista después de eliminar
+        }
+    }
+
+    fun getTaskById(taskId: Int): Flow<Task?> {
+        return flow {
+            emit(dao.getTaskById(taskId))
+        }
+    }
+
+    // Actualizar una tarea existente
+    fun updateTask(task: Task) {
+        viewModelScope.launch {
+            dao.updateTask(task)
+            _tasks.value = dao.getAllTasks() // Recargar la lista
         }
     }
 }
