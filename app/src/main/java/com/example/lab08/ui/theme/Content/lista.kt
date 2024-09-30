@@ -51,7 +51,7 @@ fun NoteContent(padding: PaddingValues, modifier: Modifier = Modifier, viewModel
                 TaskCard(
                     task = task,
                     onDelete = {
-                         // Eliminar la tarea usando el ViewModel
+                        viewModel.deleteTask(task)  // Eliminar la tarea cuando se presiona el botón
                     }
                 )
             }
@@ -63,7 +63,7 @@ fun NoteContent(padding: PaddingValues, modifier: Modifier = Modifier, viewModel
             onClick = { coroutineScope.launch { viewModel.deleteAllTasks() } },
             modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFF1C1718)
+                containerColor = Color(0xFFD78183)
             ),
         ) {
             Text("Eliminar todas las tareas")
@@ -93,7 +93,7 @@ fun TaskCard(task: Task, onDelete: () -> Unit) {
             .fillMaxWidth()
             .padding(8.dp), // Espacio alrededor de la tarjeta
         shape = RoundedCornerShape(16.dp), // Forma redondeada
-        colors = CardDefaults.cardColors(containerColor = Color(0xFF70504B)) // Color de fondo de la tarjeta
+        colors = CardDefaults.cardColors(containerColor = Color(0xFF725049)) // Color de fondo de la tarjeta
     ) {
         Row(
             modifier = Modifier

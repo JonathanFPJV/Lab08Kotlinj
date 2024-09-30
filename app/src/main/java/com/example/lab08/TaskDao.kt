@@ -1,6 +1,7 @@
 package com.example.lab08
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
@@ -34,4 +35,7 @@ interface TaskDao {
 
     @Query("SELECT * FROM tasks ORDER BY priority DESC")
     suspend fun getTasksOrderedByPriority(): List<Task>
+
+    @Delete
+    suspend fun deleteTask(task: Task)
 }

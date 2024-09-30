@@ -86,4 +86,11 @@ class TaskViewModel(private val dao: TaskDao): ViewModel(){
         }
     }
 
+    // Función para eliminar una tarea
+    fun deleteTask(task: Task) {
+        viewModelScope.launch {
+            dao.deleteTask(task)
+            _tasks.value = dao.getAllTasks()  // Recargamos la lista después de eliminar
+        }
+    }
 }
